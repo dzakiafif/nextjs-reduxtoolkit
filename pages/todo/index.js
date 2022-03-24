@@ -15,7 +15,7 @@ import {
   Checkbox
 } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon, AddIcon } from "@chakra-ui/icons";
-import { useTable, useSortBy, useRowSelect } from "react-table";
+import { useTable, useSortBy } from "react-table";
 
 import { deleteTodo, completeTodo, unCompleteTodo } from "../../slices/todoSlice";
 
