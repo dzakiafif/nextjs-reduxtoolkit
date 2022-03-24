@@ -11,12 +11,13 @@ import {
   chakra,
   Button,
   Flex,
-  Box
+  Box,
+  Checkbox
 } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon, AddIcon } from "@chakra-ui/icons";
 import { useTable, useSortBy, useRowSelect } from "react-table";
 
-import { deleteTodo } from "../../slices/todoSlice";
+import { deleteTodo, completeTodo, unCompleteTodo } from "../../slices/todoSlice";
 
 export default function Todo() {
   const data = useSelector((state) => state.todo);
@@ -27,11 +28,28 @@ export default function Todo() {
     dispatch(deleteTodo(id));
   };
 
+  const checkedTodos = (e, id) => {
+    if (e.target.checked) {
+      dispatch(completeTodo(id));
+    } else {
+      dispatch(unCompleteTodo(id));
+    }
+  }
+
   const columns = React.useMemo(
     () => [
       {
         Header: "Title",
         accessor: "title",
+      },
+      {
+        Header: '',
+        accessor: 'checked',
+        Cell: (row) => (
+          <div>
+            <Checkbox defaultChecked={row.row.original.complete} onChange={(e) => checkedTodos(e, row.row.original.id)}></Checkbox>
+          </div>
+        )
       },
       {
         Header: "Action",
@@ -40,7 +58,7 @@ export default function Todo() {
           <div>
             <Button
               colorScheme="red"
-              onClick={(e) => deleteTodos(row.row.original.id)}
+              onClick={() => deleteTodos(row.row.original.id)}
             >
               Delete
             </Button>
